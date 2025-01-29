@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Medien</ion-title>
+    <ion-buttons slot="end">
+      <!-- Button to toggle the Add Image Form -->
+      <ion-button (click)="toggleAddImageForm()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Add Image Form -->
+  <div *ngIf="showAddImageForm" class="add-image-form">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add New Image</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Image Title</ion-label>
+          <ion-input [(ngModel)]="newImageTitle" placeholder="Enter image title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Upload Image</ion-label>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        </ion-item>
+        <div class="image-preview" *ngIf="selectedImage">
+          <ion-img [src]="selectedImage"></ion-img>
+        </div>
+        <ion-button expand="block" color="primary" (click)="addImage()">Add Image</ion-button>
+        <ion-button expand="block" color="light" (click)="toggleAddImageForm()">Cancel</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- List of Images -->
+  <ion-list>
+    <ion-item *ngFor="let image of imageList" (click)="openImageDetail(image)">
+      <!-- Image Thumbnail -->
+      <ion-thumbnail slot="start">
+        <img [src]="image.url" />
+      </ion-thumbnail>
+    
+      <!-- Image Title, Date, and Location -->
+      <ion-label>
+        <h2>{{ image.title }}</h2>
+        <p>Date: {{ image.date }}</p>
+      </ion-label>
+    
+      <!-- Edit and Delete Buttons -->
+      <ion-buttons slot="end">
+        <ion-button (click)="presentActionSheet(image.id); $event.stopPropagation()">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    
+  </ion-list>
+</ion-content>
